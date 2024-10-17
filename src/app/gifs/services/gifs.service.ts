@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Gif, SearchResponse } from '../interfaces/gifs.interfaces';
+import { compileNgModule } from '@angular/compiler';
 
 
 @Injectable({providedIn: 'root'})
 export class GifsService {
 //creamos propiedad para almacenar busquedas
+//https://api.giphy.com/v1/gifs/search?api_key=JSrm8rc1LKKwWKH2vITeOj5HuA41ed3Z&q=batman&limit=10
+
+  public gifList: Gif[] = []; //almacena los gifs
 
   private _tagsHistory: string[] = [];
   private apiKey:     string = 'JSrm8rc1LKKwWKH2vITeOj5HuA41ed3Z'
@@ -36,10 +41,12 @@ export class GifsService {
     .set('limit', '10')
     .set('q', tag)
 
-    this.http.get(`${this.serviceUrl}/search`, { params })
+    this.http.get<SearchResponse>(`${this.serviceUrl}/search`, { params })
     .subscribe( resp => {
 
-      console.log(resp)
+      this.gifList = resp.data;
+      console.log({gifs: this.gifList});
+
     } );
 
   }
