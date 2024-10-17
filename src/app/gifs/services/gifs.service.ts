@@ -30,6 +30,13 @@ export class GifsService {
 
     this._tagsHistory.unshift( tag );
     this._tagsHistory = this._tagsHistory.splice(0,10);
+    this.saveLocalStorage();
+  }
+
+  //metodo para hacer persistente la data en localstorage
+
+  private saveLocalStorage():void{
+    localStorage.setItem('history', JSON.stringify(this._tagsHistory));
   }
 
   searchTag( tag: string):void{
